@@ -7,26 +7,59 @@ const posts = await getPublicPosts();
 const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
   a.localeCompare(b, "zh-CN")
 );
+const latestPost = posts[0];
 ---
 
 <BaseLayout>
-  <section class="overview" aria-labelledby="site-title">
-    <div class="intro">
-      <p class="eyebrow">Knowledge Lab</p>
-      <h1 id="site-title">知识实验室</h1>
-      <p class="intro-text">
-        这里会逐步沉淀公开笔记、长文、项目记录和知识地图。
-      </p>
+  <section class="hero" aria-labelledby="site-title">
+    <div class="hero-copy">
+      <p class="eyebrow">Knowledge Lab / AI-ready</p>
+      <h1 id="site-title">把笔记变成会生长的网站</h1>
+      <p class="intro-text">这里不是传统博客，而是从 Obsidian 公开笔记里长出来的知识入口。</p>
+
+      <div class="hero-links">
+        {
+          latestPost && (
+            <a class="primary-link" href={withBase(`/posts/${latestPost.id}/`)}>
+              阅读起点
+            </a>
+          )
+        }
+        <a class="secondary-link" href={withBase("/#latest")}>查看公开内容</a>
+      </div>
+
+      <dl class="signal-grid" aria-label="站点状态">
+        <div>
+          <dt>{posts.length}</dt>
+          <dd>公开节点</dd>
+        </div>
+        <div>
+          <dt>{tags.length}</dt>
+          <dd>主题线索</dd>
+        </div>
+        <div>
+          <dt>AI</dt>
+          <dd>下一层</dd>
+        </div>
+      </dl>
     </div>
 
-    <div class="map-panel" aria-label="知识节点预览">
+    <figure class="knowledge-visual" aria-label="知识节点预览">
       <img src={withBase("/knowledge-map.png")} alt="" loading="eager" />
-    </div>
+      <figcaption>
+        <span>notes</span>
+        <span>routes</span>
+        <span>ai layer</span>
+      </figcaption>
+    </figure>
   </section>
 
-  <section class="content-band" aria-labelledby="latest-title">
+  <section class="content-band" id="latest" aria-labelledby="latest-title">
     <div class="section-heading">
-      <h2 id="latest-title">最新公开内容</h2>
+      <div>
+        <p class="section-kicker">Published</p>
+        <h2 id="latest-title">最新公开内容</h2>
+      </div>
       <p>{posts.length} 篇</p>
     </div>
 
@@ -36,13 +69,15 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =
           {posts.map((post) => (
             <article class="post-card">
               <a href={withBase(`/posts/${post.id}/`)} class="post-link">
-                <span class="post-type">{post.data.type}</span>
-                <h3>{post.data.title}</h3>
-                <p>{post.data.description}</p>
-                <div class="post-meta">
+                <div class="post-topline">
+                  <span class="post-type">{post.data.type}</span>
                   <time datetime={post.data.pubDate.toISOString()}>
                     {post.data.pubDate.toLocaleDateString("zh-CN")}
                   </time>
+                </div>
+                <h3>{post.data.title}</h3>
+                <p>{post.data.description}</p>
+                <div class="post-meta">
                   <span>{post.data.tags.join(" / ")}</span>
                 </div>
               </a>
@@ -57,8 +92,13 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =
 
   {
     tags.length > 0 && (
-      <section class="tag-band" aria-labelledby="tags-title">
-        <h2 id="tags-title">主题</h2>
+      <section class="tag-band" id="topics" aria-labelledby="tags-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Topics</p>
+            <h2 id="tags-title">主题索引</h2>
+          </div>
+        </div>
         <div class="tags">
           {tags.map((tag) => (
             <span>{tag}</span>
