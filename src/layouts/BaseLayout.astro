@@ -1,0 +1,32 @@
+---
+import "../styles/global.css";
+import { withBase } from "../lib/paths";
+
+type Props = {
+  title?: string;
+  description?: string;
+};
+
+const {
+  title = "知识实验室",
+  description = "一个从公开笔记生长出来的个人知识站。",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href={withBase("/")}>知识实验室</a>
+    </header>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

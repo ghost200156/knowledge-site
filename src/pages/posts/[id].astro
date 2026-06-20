@@ -1,0 +1,38 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPublicPosts } from "../../lib/content";
+import { withBase } from "../../lib/paths";
+
+export async function getStaticPaths() {
+  const posts = await getPublicPosts();
+
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} | 知识实验室`} description={post.data.description}>
+  <article class="article">
+    <a class="back-link" href={withBase("/")}>返回</a>
+    <header class="article-header">
+      <p class="eyebrow">{post.data.type}</p>
+      <h1>{post.data.title}</h1>
+      <p>{post.data.description}</p>
+      <div class="post-meta">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {post.data.pubDate.toLocaleDateString("zh-CN")}
+        </time>
+        <span>{post.data.tags.join(" / ")}</span>
+      </div>
+    </header>
+    <div class="article-body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
