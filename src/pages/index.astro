@@ -11,79 +11,83 @@ const latestPost = posts[0];
 ---
 
 <BaseLayout>
-  <section class="hero" aria-labelledby="site-title">
-    <div class="hero-copy">
-      <p class="eyebrow">Knowledge Lab / AI-ready</p>
-      <h1 id="site-title">把笔记变成会生长的网站</h1>
-      <p class="intro-text">这里不是传统博客，而是从 Obsidian 公开笔记里长出来的知识入口。</p>
+  <section class="cover" aria-labelledby="site-title">
+    <div class="cover-intro">
+      <p class="eyebrow">Public knowledge index</p>
+      <h1 id="site-title">未完成知识的公开索引</h1>
+      <p class="intro-text">从 Obsidian 里筛出可以公开的想法，先形成可读的路径，再慢慢长成语义地图。</p>
 
-      <div class="hero-links">
-        {
-          latestPost && (
-            <a class="primary-link" href={withBase(`/posts/${latestPost.id}/`)}>
-              阅读起点
-            </a>
-          )
-        }
-        <a class="secondary-link" href={withBase("/#latest")}>查看公开内容</a>
-      </div>
-
-      <dl class="signal-grid" aria-label="站点状态">
+      <dl class="site-stats" aria-label="站点状态">
         <div>
           <dt>{posts.length}</dt>
-          <dd>公开节点</dd>
+          <dd>公开笔记</dd>
         </div>
         <div>
           <dt>{tags.length}</dt>
-          <dd>主题线索</dd>
+          <dd>主题</dd>
         </div>
         <div>
-          <dt>AI</dt>
-          <dd>下一层</dd>
+          <dt>MD</dt>
+          <dd>内容源</dd>
         </div>
       </dl>
     </div>
 
-    <figure class="knowledge-visual" aria-label="知识节点预览">
+    {
+      latestPost && (
+        <article class="featured-note">
+          <p class="panel-label">Latest</p>
+          <a href={withBase(`/posts/${latestPost.id}/`)}>
+            <span class="note-type">{latestPost.data.type}</span>
+            <h2>{latestPost.data.title}</h2>
+            <p>{latestPost.data.description}</p>
+            <time datetime={latestPost.data.pubDate.toISOString()}>
+              {latestPost.data.pubDate.toLocaleDateString("zh-CN")}
+            </time>
+          </a>
+        </article>
+      )
+    }
+
+    <aside class="map-module" aria-label="知识地图">
+      <div class="map-copy">
+        <p class="panel-label">Map</p>
+        <p>notes / links / routes</p>
+      </div>
       <img src={withBase("/knowledge-map.png")} alt="" loading="eager" />
-      <figcaption>
-        <span>notes</span>
-        <span>routes</span>
-        <span>ai layer</span>
-      </figcaption>
-    </figure>
+    </aside>
   </section>
 
-  <section class="content-band" id="latest" aria-labelledby="latest-title">
+  <section class="note-index" id="notes" aria-labelledby="notes-title">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Published</p>
-        <h2 id="latest-title">最新公开内容</h2>
+        <p class="section-kicker">Published notes</p>
+        <h2 id="notes-title">公开笔记</h2>
       </div>
       <p>{posts.length} 篇</p>
     </div>
 
     {
       posts.length > 0 ? (
-        <div class="post-list">
-          {posts.map((post) => (
-            <article class="post-card">
-              <a href={withBase(`/posts/${post.id}/`)} class="post-link">
-                <div class="post-topline">
-                  <span class="post-type">{post.data.type}</span>
-                  <time datetime={post.data.pubDate.toISOString()}>
-                    {post.data.pubDate.toLocaleDateString("zh-CN")}
-                  </time>
-                </div>
-                <h3>{post.data.title}</h3>
-                <p>{post.data.description}</p>
-                <div class="post-meta">
-                  <span>{post.data.tags.join(" / ")}</span>
-                </div>
+        <ol class="note-list">
+          {posts.map((post, index) => (
+            <li>
+              <a href={withBase(`/posts/${post.id}/`)}>
+                <span class="note-number">{String(index + 1).padStart(2, "0")}</span>
+                <span class="note-main">
+                  <span class="note-row">
+                    <strong>{post.data.title}</strong>
+                    <time datetime={post.data.pubDate.toISOString()}>
+                      {post.data.pubDate.toLocaleDateString("zh-CN")}
+                    </time>
+                  </span>
+                  <span>{post.data.description}</span>
+                </span>
+                <span class="note-tags">{post.data.tags.join(" / ")}</span>
               </a>
-            </article>
+            </li>
           ))}
-        </div>
+        </ol>
       ) : (
         <p class="empty-state">还没有公开内容。</p>
       )
@@ -92,11 +96,11 @@ const latestPost = posts[0];
 
   {
     tags.length > 0 && (
-      <section class="tag-band" id="topics" aria-labelledby="tags-title">
+      <section class="topic-index" id="topics" aria-labelledby="tags-title">
         <div class="section-heading">
           <div>
             <p class="section-kicker">Topics</p>
-            <h2 id="tags-title">主题索引</h2>
+            <h2 id="tags-title">主题</h2>
           </div>
         </div>
         <div class="tags">

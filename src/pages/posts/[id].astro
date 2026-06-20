@@ -19,17 +19,17 @@ const { Content } = await render(post);
 
 <BaseLayout title={`${post.data.title} | 知识实验室`} description={post.data.description}>
   <article class="article">
-    <a class="back-link" href={withBase("/")}>返回</a>
+    <a class="back-link" href={withBase("/")}>← 索引</a>
     <header class="article-header">
-      <p class="eyebrow">{post.data.type}</p>
-      <h1>{post.data.title}</h1>
-      <p>{post.data.description}</p>
-      <div class="post-meta">
+      <div class="article-meta">
+        <span>{post.data.type}</span>
         <time datetime={post.data.pubDate.toISOString()}>
           {post.data.pubDate.toLocaleDateString("zh-CN")}
         </time>
-        <span>{post.data.tags.join(" / ")}</span>
       </div>
+      <h1>{post.data.title}</h1>
+      <p>{post.data.description}</p>
+      <p class="article-tags">{post.data.tags.join(" / ")}</p>
     </header>
     <div class="article-body">
       <Content />

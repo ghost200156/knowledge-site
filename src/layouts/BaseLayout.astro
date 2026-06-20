@@ -22,21 +22,24 @@ const {
     <title>{title}</title>
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href={withBase("/")}>
-        <span class="brand-mark" aria-hidden="true">K</span>
-        <span>知识实验室</span>
-      </a>
-      <nav class="site-nav" aria-label="站点导航">
-        <a href={withBase("/")}>索引</a>
-        <a href={withBase("/#topics")}>主题</a>
-      </nav>
-    </header>
-    <main class="site-main">
-      <slot />
-    </main>
-    <footer class="site-footer">
-      <span>Obsidian / Astro / GitHub Pages</span>
-    </footer>
+    <div class="page-frame">
+      <header class="site-header">
+        <a class="brand" href={withBase("/")}>
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>知识实验室</span>
+        </a>
+        <nav class="site-nav" aria-label="站点导航">
+          <a href={withBase("/#notes")}>笔记</a>
+          <a href={withBase("/#topics")}>主题</a>
+        </nav>
+      </header>
+      <main class="site-main">
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <span>Obsidian writing system</span>
+        <span>Static first, AI later</span>
+      </footer>
+    </div>
   </body>
 </html>
