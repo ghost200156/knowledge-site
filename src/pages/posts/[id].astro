@@ -19,7 +19,8 @@ const { Content } = await render(post);
 
 <BaseLayout title={`${post.data.title} | 知识实验室`} description={post.data.description}>
   <article class="article">
-    <a class="back-link" href={withBase("/")}>← 索引</a>
+    <a class="back-link" href={withBase("/")}>返回首页</a>
+
     <header class="article-header">
       <div class="article-meta">
         <span>{post.data.type}</span>
@@ -31,8 +32,16 @@ const { Content } = await render(post);
       <p>{post.data.description}</p>
       <p class="article-tags">{post.data.tags.join(" / ")}</p>
     </header>
-    <div class="article-body">
-      <Content />
+
+    <div class="article-layout">
+      <aside class="article-side" aria-label="文章信息">
+        <p>Source</p>
+        <strong>Obsidian Markdown</strong>
+        <span>公开内容需要同时满足 published 和 public。</span>
+      </aside>
+      <div class="article-body">
+        <Content />
+      </div>
     </div>
   </article>
 </BaseLayout>

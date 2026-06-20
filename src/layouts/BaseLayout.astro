@@ -9,7 +9,7 @@ type Props = {
 
 const {
   title = "知识实验室",
-  description = "一个从公开笔记生长出来的个人知识站。",
+  description = "一个从 Obsidian 笔记生长出来的个人知识站。",
 } = Astro.props;
 ---
 
@@ -22,23 +22,29 @@ const {
     <title>{title}</title>
   </head>
   <body>
-    <div class="page-frame">
+    <div class="site-shell">
       <header class="site-header">
-        <a class="brand" href={withBase("/")}>
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>知识实验室</span>
+        <a class="brand" href={withBase("/")} aria-label="回到首页">
+          <span class="brand-mark" aria-hidden="true">知</span>
+          <span class="brand-text">
+            <strong>知识实验室</strong>
+            <small>Obsidian Garden</small>
+          </span>
         </a>
         <nav class="site-nav" aria-label="站点导航">
-          <a href={withBase("/#notes")}>笔记</a>
+          <a href={withBase("/#writing")}>文章</a>
+          <a href={withBase("/#lab")}>实验</a>
           <a href={withBase("/#topics")}>主题</a>
         </nav>
       </header>
+
       <main class="site-main">
         <slot />
       </main>
+
       <footer class="site-footer">
-        <span>Obsidian writing system</span>
-        <span>Static first, AI later</span>
+        <span>Written in Obsidian</span>
+        <span>Built with Astro and GitHub Pages</span>
       </footer>
     </div>
   </body>
